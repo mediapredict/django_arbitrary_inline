@@ -22,9 +22,8 @@ class BaseArbitraryInlineFormSet(BaseModelFormSet):
         else:
             if queryset is None:
                 queryset = self.model._default_manager
-            qs = queryset.filter(**{
-                self.model_field.name: getattr(self.instance, self.parent_model_field.name),
-            })
+            shared_val = getattr(self.instance, self.parent_model_field.name)
+            qs = queryset.filter(**{self.model_field.name: shared_val})
         super(BaseArbitraryInlineFormSet, self).__init__(
             queryset=qs, data=data, files=files,
             prefix=prefix,
@@ -34,23 +33,31 @@ class BaseArbitraryInlineFormSet(BaseModelFormSet):
     @classmethod
     def get_default_prefix(cls):
         opts = cls.model._meta
-        return '-'.join(
-            (opts.app_label, opts.model_name,
-            cls.model_field.name,)
-        )
+        return '-'.join((
+            opts.app_label, opts.model_name,
+            cls.model_field.name,
+        ))
 
     def save_new(self, form, commit=True):
-        parent_model_val = getattr(self.instance, self.parent_model_field.get_attname())
-        setattr(form.instance, self.model_field.get_attname(), parent_model_val)
+        parent_model_val = getattr(
+            self.instance,
+            self.parent_model_field.get_attname()
+        )
+        setattr(
+            form.instance,
+            self.model_field.get_attname(),
+            parent_model_val
+        )
         return form.save(commit=commit)
 
 
 def Arbitrary_inlineformset_factory(
-        model, parent_model, form=ModelForm, formset=BaseArbitraryInlineFormSet,
-        model_field=None, parent_model_field=None, fields=None,
-        exclude=None, extra=3, can_order=False, can_delete=True, max_num=None,
-        formfield_callback=None, validate_max=False,
-        min_num=None, validate_min=False):
+        model, parent_model, form=ModelForm,
+        formset=BaseArbitraryInlineFormSet, model_field=None,
+        parent_model_field=None, fields=None, exclude=None, extra=3,
+        can_order=False, can_delete=True, max_num=None,
+        formfield_callback=None, validate_max=False, min_num=None,
+        validate_min=False):
     """
     Returns a ``BaseArbitraryInlineFormSet`` for the given kwargs.
     """
@@ -58,7 +65,9 @@ def Arbitrary_inlineformset_factory(
     parent_opts = parent_model._meta
     # if fields are missing let the error propagate
     model_field = opts.get_field(model_field)
-    parent_model_field = parent_opts.get_field(parent_model_field)  # let the exception propagate
+
+    # let the exception propagate
+    parent_model_field = parent_opts.get_field(parent_model_field)
     if exclude is not None:
         exclude = list(exclude)
         exclude.extend([model_field.name])
@@ -66,11 +75,11 @@ def Arbitrary_inlineformset_factory(
         exclude = [model_field.name]
     FormSet = modelformset_factory(model, form=form,
                                    formfield_callback=formfield_callback,
-                                   formset=formset,
-                                   extra=extra, can_delete=can_delete, can_order=can_order,
-                                   fields=fields, exclude=exclude, max_num=max_num,
-                                   validate_max=validate_max, min_num=min_num,
-                                   validate_min=validate_min)
+                                   formset=formset, extra=extra,
+                                   can_delete=can_delete, can_order=can_order,
+                                   fields=fields, exclude=exclude,
+                                   max_num=max_num, validate_max=validate_max,
+                                   min_num=min_num, validate_min=validate_min)
     FormSet.model_field = model_field
     FormSet.parent_model_field = parent_model_field
     return FormSet

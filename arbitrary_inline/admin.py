@@ -5,7 +5,8 @@ from functools import partial
 from django.contrib.admin.checks import InlineModelAdminChecks
 from django.contrib.admin.options import InlineModelAdmin, flatten_fieldsets
 from .forms import (
-    BaseArbitraryInlineFormSet, Arbitrary_inlineformset_factory,
+    BaseArbitraryInlineFormSet,
+    Arbitrary_inlineformset_factory,
 )
 from django.forms import ALL_FIELDS
 from django.forms.models import modelform_defines_fields
@@ -34,17 +35,21 @@ class ArbitraryInlineModelAdmin(InlineModelAdmin):
         else:
             exclude = list(self.exclude)
         exclude.extend(self.get_readonly_fields(request, obj))
-        if self.exclude is None and hasattr(self.form, '_meta') and self.form._meta.exclude:
+        if (self.exclude is None
+                and hasattr(self.form, '_meta')
+                and self.form._meta.exclude):
             # Take the custom ModelForm's Meta.exclude into account only if the
             # GenericInlineModelAdmin doesn't define its own.
             exclude.extend(self.form._meta.exclude)
         exclude = exclude or None
-        can_delete = self.can_delete and self.has_delete_permission(request, obj)
+        can_delete = (self.can_delete
+                      and self.has_delete_permission(request, obj))
         defaults = {
             "model_field": self.model_field,
             "parent_model_field": self.parent_model_field,
             "form": self.form,
-            "formfield_callback": partial(self.formfield_for_dbfield, request=request),
+            "formfield_callback": partial(self.formfield_for_dbfield,
+                                          request=request),
             "formset": self.formset,
             "extra": self.get_extra(request, obj),
             "can_delete": can_delete,
@@ -56,10 +61,13 @@ class ArbitraryInlineModelAdmin(InlineModelAdmin):
         }
         defaults.update(kwargs)
 
-        if defaults['fields'] is None and not modelform_defines_fields(defaults['form']):
+        if (defaults['fields'] is None
+                and not modelform_defines_fields(defaults['form'])):
             defaults['fields'] = ALL_FIELDS
 
-        return Arbitrary_inlineformset_factory(self.model, self.parent_model, **defaults)
+        return Arbitrary_inlineformset_factory(self.model,
+                                               self.parent_model,
+                                               **defaults)
 
 
 class ArbitraryStackedInline(ArbitraryInlineModelAdmin):

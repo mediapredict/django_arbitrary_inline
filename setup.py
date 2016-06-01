@@ -1,9 +1,11 @@
+from setuptools import setup
+
+
 __doc__ = """
 Django Admin compatible ModelInline that can be related
 to the primary model on fields other than a Primary Key.
 """
 
-from setuptools import setup
 
 setup(
     name='django-arbitrary-inline',
@@ -11,7 +13,7 @@ setup(
     author='James Robert',
     author_email='james@mediapredict.com',
     description='Django Admin compatible ModelInline that can be related '
-    	'to the primary model on fields other than a Primary Key',
+                'to the primary model on fields other than a Primary Key',
     license='BSD',
     keywords='django django-admin',
     url='https://github.com/mediapredict/django_arbitrary_inline',
