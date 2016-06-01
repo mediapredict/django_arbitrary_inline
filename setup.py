@@ -14,7 +14,7 @@ setup(
     	'to the primary model on fields other than a Primary Key',
     license='BSD',
     keywords='django django-admin',
-    url='http://github.com',
+    url='https://github.com/mediapredict/django_arbitrary_inline',
     packages=['arbitrary_inline'],
     long_description=__doc__,
     classifiers=[
