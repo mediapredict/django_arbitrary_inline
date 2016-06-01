@@ -1,5 +1,7 @@
 # Arbitrary InlineModelAdmin for Django Admin
 
+[![Build Status](https://travis-ci.org/mediapredict/django_arbitrary_inline.svg?branch=master)](https://travis-ci.org/mediapredict/django_arbitrary_inline)
+
 Normally you would use a model inline in Django Admin to show a model which has
 a Foreign Key to the primary model you are editing. In some cases, like when you
 have a bunch of other models which point to the same primary model (e.g., 
