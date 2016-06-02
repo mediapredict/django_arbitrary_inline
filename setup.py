@@ -9,7 +9,7 @@ to the primary model on fields other than a Primary Key.
 
 setup(
     name='django-arbitrary-inline',
-    version='0.1.0',
+    version='0.1.2',
     author='James Robert',
     author_email='james@mediapredict.com',
     description='Django Admin compatible ModelInline that can be related '
