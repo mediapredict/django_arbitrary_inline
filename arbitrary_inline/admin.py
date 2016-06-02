@@ -6,7 +6,7 @@ from django.contrib.admin.checks import InlineModelAdminChecks
 from django.contrib.admin.options import InlineModelAdmin, flatten_fieldsets
 from .forms import (
     BaseArbitraryInlineFormSet,
-    Arbitrary_inlineformset_factory,
+    arbitrary_inlineformset_factory,
 )
 from django.forms import ALL_FIELDS
 from django.forms.models import modelform_defines_fields
@@ -65,7 +65,7 @@ class ArbitraryInlineModelAdmin(InlineModelAdmin):
                 and not modelform_defines_fields(defaults['form'])):
             defaults['fields'] = ALL_FIELDS
 
-        return Arbitrary_inlineformset_factory(self.model,
+        return arbitrary_inlineformset_factory(self.model,
                                                self.parent_model,
                                                **defaults)
 

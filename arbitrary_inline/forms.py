@@ -51,7 +51,7 @@ class BaseArbitraryInlineFormSet(BaseModelFormSet):
         return form.save(commit=commit)
 
 
-def Arbitrary_inlineformset_factory(
+def arbitrary_inlineformset_factory(
         model, parent_model, form=ModelForm,
         formset=BaseArbitraryInlineFormSet, model_field=None,
         parent_model_field=None, fields=None, exclude=None, extra=3,

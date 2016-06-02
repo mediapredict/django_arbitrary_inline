@@ -3,5 +3,7 @@ python:
   - "2.7"
 install:
   - pip install django pycodestyle
+  - pip install -e .
 script:
   - "pycodestyle --show-source --show-pep8"
+  - "python tests/run_tests.py"
