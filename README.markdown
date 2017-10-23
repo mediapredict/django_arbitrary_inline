@@ -41,7 +41,7 @@ admin.site.register(UserProfile, UserProfileAdmin)
 ### Installation
 
 ```sh
-pip install django-abritrary-inline
+pip install django-arbitrary-inline
 ```
 
 ### License
